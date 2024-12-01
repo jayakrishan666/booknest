@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+        }
+        .btn2{
+            background-color: #2ecc71;
+            margin-left: 850px;
+        }
+    </style>
+</head>
+<body>
+    
+    {% extends 'base.html' %}
+
+{% block title %}Your Orders - BookNest{% endblock %}
+
+{% block content %}
+    <h1>Your Orders</h1>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date Ordered</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Total Cost</th>
+                    <th>Products Ordered</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.date_ordered }}</td>
+                        <td>{{ order.address }}</td>
+                        <td>{{ order.phone_number }}</td>
+                        <td>${{ order.total_cost }}</td>
+                        <td>
+                            <ul>
+                                {% for item in order.items.all %}
+                                    <li>{{ item.product.title }} - Quantity: {{ item.quantity }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            {% if not order.is_confirmed %}
+                                <form method="POST" action="{% url 'cancel_order' order.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Cancel Order</button>
+                                </form>
+                            {% else %}
+                                Confirmed
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn2" onclick="location.href='{% url 'home' %}'">Continue Shopping</button>
+    {% else %}
+        <p>You have no orders yet.</p>
+    {% endif %}
+{% endblock %}
+<div class="back-button">
+    <a href="javascript:history.back();" class="button">Back</a>
+</div>
+</body>
+</html>

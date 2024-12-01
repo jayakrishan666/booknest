@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-details h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .order-details p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .total-cost {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .form-group textarea {
+            height: 120px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Checkout</h2>
+        <div class="order-details">
+            <h3>Your Cart:</h3>
+            {% for item in cart_items %}
+                <div class="order-item">
+                    <p>{{ item.product.title }} - ₹{{ item.product.price }} x {{ item.quantity }}</p>
+                </div>
+            {% endfor %}
+            <p class="total-cost"><strong>Total Cost: ₹{{ total_cost }}</strong></p>
+
+            <form method="POST">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <div class="form-group">
+                    <label for="address">Name: {{user.username}}</label>
+                    <label for="address">Mail: {{user.email}}</label>
+                    <label for="address">Address:</label>
+                    <textarea name="address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number:</label>
+                    <input type="text" name="phone_number" maxlength="10" required>
+                </div>
+                <button type="submit">Confirm Order</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #1A2B48;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  max-width: 350px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar h1 {
+  font-size: 24px;
+}
+
+/* .navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+} */
+
+.navbar a:hover {
+  text-decoration:double,
+  color(srgb red green blue)
+}
+
+/* Body with Gradient Background */
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4A90E2, #9013FE);
+  color: #333;
+  flex-direction: column; /* Added to include navbar */
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Login and Signup Card */
+.login-card, .signup-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px 30px;
+  max-width: 350px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+h2 {
+  color: #4A90E2;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Input Fields */
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+  border-color: #4A90E2;
+}
+
+/* Button Style */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #4A90E2;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #9013FE;
+}
+
+/* Link Style */
+p {
+  margin-top: 15px;
+}
+
+a {
+  color: #4A90E2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9013FE;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 480px) {
+  .login-card, .signup-card {
+      padding: 30px 20px;
+  }
+
+  h2 {
+      font-size: 20px;
+  }
+
+  input[type="text"], input[type="email"], input[type="password"] {
+      padding: 10px;
+  }
+
+  button[type="submit"] {
+      padding: 10px;
+  }
+}
+.alert-container {
+  margin-bottom: 15px;
+}
+
+.alert {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.alert-error {
+  background-color: #f44336; /* Red */
+}
+
+.alert-success {
+  background-color: #4CAF50; /* Green */
+}
