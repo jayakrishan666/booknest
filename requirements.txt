@@ -84,7 +84,6 @@ nest-asyncio==1.6.0
 notebook==7.2.2
 notebook_shim==0.2.4
 numpy>=1.25.0
-Online-Book-Store==1.0
 opencv-python==4.9.0.80
 oscrypto==1.3.0
 overrides==7.7.0
