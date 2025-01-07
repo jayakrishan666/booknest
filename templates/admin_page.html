@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-brand:hover,
+        .nav-link:hover {
+            color: #f8f9fa !important;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .alert {
+            border-radius: 10px;
+            background-color: #28a745;
+            color: white;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .table {
+            margin-top: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table td {
+            color: #343a40;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">BookNest Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert" id="success-message">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Add Category Section -->
+        <div class="card">
+            <div class="card-header">
+                Add Category
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'add_category' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="category-name" class="form-label">Category Name:</label>
+                        <input type="text" id="category-name" name="name" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Category List Section with Edit Option -->
+        <div class="card">
+            <div class="card-header">
+                Categories List
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <a href="{% url 'edit_category' category.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'remove_category' category.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?')">Remove</a>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Product Section -->
+        <div class="card">
+            <div class="card-header">
+                Add Product
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" action="{% url 'add_product' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="product-title" class="form-label">Title:</label>
+                        <input type="text" id="product-title" name="title" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-author" class="form-label">Author:</label>
+                        <input type="text" id="product-author" name="author" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-price" class="form-label">Price:</label>
+                        <input type="number" step="0.01" id="product-price" name="price" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-category" class="form-label">Category:</label>
+                        <select id="product-category" name="category_id" class="form-select" required>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-quantity" class="form-label">Quantity:</label>
+                        <input type="number" step="1" id="product-quantity" name="quantity" class="form-control"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-image" class="form-label">Image:</label>
+                        <input type="file" id="product-image" name="image" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Product List Section with Edit Option -->
+        <div class="card">
+            <div class="card-header">
+                Products List
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>{{ product.title }}</td>
+                            <td>{{ product.author }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.category.name }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>
+                                <a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'remove_product' product.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">Remove</a>
+                               
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User List Section with Edit Option -->
+        <div class="card">
+            <div class="card-header">
+                User Details
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <!-- <th>Staff Status</th> -->
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <!-- <td>{{ user.is_staff }}</td> -->
+                            <td>
+                                <!-- <a href="{% url 'edit_user' user.id %}" class="btn btn-warning btn-sm">Edit</a> -->
+                                <a href="{% url 'remove_user' user.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Remove</a>
+                                <a href="{% url 'view_user_details' user.id %}" class="btn btn-info btn-sm">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        setTimeout(function () {
+            var alertMessage = document.getElementById('success-message');
+            if (alertMessage) {
+                alertMessage.style.opacity = '0';
+                setTimeout(function () {
+                    alertMessage.style.display = 'none';
+                }, 500); // Wait for the fade-out transition to complete
+            }
+        }, 10000); // 10 seconds
+    </script>
+
+</body>
+
+</html>

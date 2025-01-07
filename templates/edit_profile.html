@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - BookNest{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Your Profile</h2>
+
+    <!-- Display any success or error messages -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Edit Profile Form -->
+    <form method="POST" class="profile-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+
+        <button type="submit" class="submit-button">Save Changes</button>
+    </form>
+</div>
+
+<style>
+/* BookNest container styling */
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fdf5e6; /* Soft cream color */
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    font-family: 'Georgia', serif; /* Bookish font */
+}
+
+/* Heading style */
+h2 {
+    text-align: center;
+    font-size: 2.5em;
+    color: #6b4226; /* Warm brown */
+    margin-bottom: 25px;
+    font-weight: bold;
+    border-bottom: 2px solid #d1a374; /* Accent border */
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Message styling (for success/error messages) */
+ul.messages {
+    padding: 15px;
+    list-style-type: none;
+    background-color: #ffefcc; /* Pale yellow */
+    border: 1px solid #ffcc80;
+    color: #6b4226;
+    font-weight: bold;
+    margin-bottom: 25px;
+    border-radius: 5px;
+}
+
+/* Form styling */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Individual form group styling */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input field styling */
+input[type="text"], input[type="email"] {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #d1a374; /* Accent brown border */
+    border-radius: 5px;
+    margin-top: 8px;
+    background-color: #fffdf5; /* Soft white */
+    color: #4b3220;
+}
+
+/* Label styling */
+label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #4b3220; /* Darker brown */
+}
+
+/* Submit button styling */
+.submit-button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    background-color: #d1a374; /* Rich accent brown */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif; /* Contrasting modern font */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: center;
+}
+
+/* Button hover effect */
+.submit-button:hover {
+    background-color: #c18a63; /* Slightly darker brown */
+    transform: translateY(-3px);
+}
+
+/* Add responsive styling */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    .form-group {
+        flex-direction: column;
+    }
+}
+</style>
+
+{% endblock %}

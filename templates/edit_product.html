@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Edit Product: {{ product.title }}</h1>
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'edit_product' product.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" name="title" id="title" class="form-control" value="{{ product.title }}">
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">Author:</label>
+                <input type="text" name="author" id="author" class="form-control" value="{{ product.author }}">
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price:</label>
+                <input type="number" name="price" id="price" class="form-control" value="{{ product.price }}">
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" name="quantity" id="quantity" class="form-control" value="{{ product.quantity }}">
+            </div>
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Category:</label>
+                <select name="category_id" id="category_id" class="form-select">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image:</label>
+                <input type="file" name="image" id="image" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a class="btn btn-primary" href="javascript:history.back();" class="button">Back</a>
+        </form>
+    </div>
+    <!-- <div class="back-button">
+        <a href="javascript:history.back();" class="button">Back</a>
+    </div> -->
+    <style>
+
+    .back-button .button {
+        padding: 8px 12px; /* Adjust padding for a minimal look */
+        background-color: transparent; /* Transparent background */
+        color: #007BFF; /* Blue text color */
+        text-decoration: none; /* Remove underline */
+        border: 1px solid #007BFF; /* Blue border */
+        border-radius: 4px; /* Slightly rounded corners */
+        font-weight: normal; /* Normal font weight */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+    }
+    .back-button .button:hover {
+        background-color: #007BFF; /* Blue background on hover */
+        color: white; /* White text on hover */
+    }
+    </style>
+</body>
+</html>

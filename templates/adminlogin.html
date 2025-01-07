@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        /* Add custom styles for admin login */
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+        .admin-login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .alert-container {
+            margin-bottom: 15px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <h2>Admin Login</h2>
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post" action="{% url 'admin_dashboard' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="Admin Username" name="username" required>
+            <div class="password-field">
+                <input type="password" placeholder="Password" name="password" id="password" required>
+                <!-- <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span> -->
+            </div>
+            <button type="submit">Log In</button>
+
+            <p>Login as<a href="{% url 'login1' %}">User</a></p>
+
+        </form>
+    </div>
+
+    <!-- <script>
+        function togglePasswordVisibility(fieldId, iconElement) {
+            const passwordField = document.getElementById(fieldId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                iconElement.textContent = "🙈"; // Change icon to "hide" icon
+            } else {
+                passwordField.type = "password";
+                iconElement.textContent = "👁️"; // Change icon to "show" icon
+            }
+        }
+    </script> -->
+</body>
+</html>

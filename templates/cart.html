@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - BookNest</title>
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="navbar-left">
+        <h1>BookNest</h1>
+    </div>
+    <div class="navbar-right">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'index' %}">Logout</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'orders' %}">Orders</a>
+            <span class="user-info">{{ user.username }}</span>
+        {% endif %}
+    </div>
+</header>
+
+<h2>Your Cart</h2>
+
+<div class="cart-items">
+    {% if cart_items %}
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <h4>{{ item.product.title }}</h4>
+                    <p>Author: {{ item.product.author }}</p>
+                    <p>Price: ₹{{ item.product.price }}</p>
+                </div>
+                <div class="cart-item-actions">
+                    <form action="{% url 'update_quantity' item.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" min="1" max="{{item.product.quantity}}" value="{{ item.quantity }}">
+                        <button type="submit" class="update-button">Update</button>
+                    </form>
+                    <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                </div>
+                <p class="item-total">Total: ₹{{ item.total_price }}</p>
+            </div>
+        {% endfor %}
+        <p class="cart-total"><strong>Total Cost: ₹{{ total_cost }}</strong></p>
+        <button class="checkout-button" onclick="location.href='{% url 'checkout' %}'">Proceed to Checkout</button>
+        <button class="checkout-button" onclick="location.href='{% url 'home' %}'">Continue Shopping</button>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+
+<!-- Styling for the Cart Page -->
+<style>
+    /* Navbar Styling */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #333;
+        color: white;
+        align-items: center;
+    }
+    .navbar h1 {
+        font-size: 24px;
+        margin: 0;
+    }
+    .navbar-right a, .navbar-right .user-info {
+        color: white;
+        margin-left: 20px;
+        text-decoration: none;
+    }
+
+    /* General Page Styling */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        /* padding: 0 20px; */
+    }
+
+    h2 {
+        margin-top: 30px;
+        color: #333;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    /* Cart Item Styling */
+    .cart-items {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 15px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item-details h4 {
+        font-size: 18px;
+        margin: 0 0 5px;
+    }
+
+    .cart-item-details p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .cart-item-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .cart-item-actions form {
+        margin: 0 5px;
+    }
+
+    /* Quantity and Update Button */
+    .cart-item-actions label {
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+    .cart-item-actions input[type="number"] {
+        width: 50px;
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .update-button, .remove-button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .remove-button {
+        background-color: #dc3545;
+    }
+
+    .update-button:hover {
+        background-color: #0056b3;
+    }
+
+    .remove-button:hover {
+        background-color: #c82333;
+    }
+
+    /* Total Cost and Checkout Button */
+    .item-total {
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .cart-total {
+        text-align: right;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .checkout-button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background-color 0.3s;
+    }
+
+    .checkout-button:hover {
+        background-color: #218838;
+    }
+</style>
+<div class="back-button">
+    <a href="javascript:history.back();" class="button">Back</a>
+</div>
+
+<style>
+       .add-to-cart-button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .add-to-cart-button:hover {
+            background-color: #218838;
+        }
+    .back-button {
+        position: fixed; /* Fix the position */
+        top: 80px; /* Distance from the top */
+        left: 10px; /* Distance from the left */
+        z-index: 1000; /* Ensure it stays above other content */
+    }
+    .back-button .button {
+        padding: 8px 12px; /* Adjust padding for a minimal look */
+        background-color: transparent; /* Transparent background */
+        color: #007BFF; /* Blue text color */
+        text-decoration: none; /* Remove underline */
+        border: 1px solid #007BFF; /* Blue border */
+        border-radius: 4px; /* Slightly rounded corners */
+        font-weight: normal; /* Normal font weight */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+    }
+    .back-button .button:hover {
+        background-color: #007BFF; /* Blue background on hover */
+        color: white; /* White text on hover */
+    }
+</style>
+</body>
+</html>

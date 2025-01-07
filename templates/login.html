@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        /* Style for the eye icon */
+        .password-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-field input {
+            width: 100%;
+            padding-right: 40px; /* Space for the icon */
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="navbar-left">
+            <h1><a href="{% url 'index' %}">BookNest</a></h1>
+        </div>
+    </header>
+
+    <!-- Login Form -->
+    <div class="form-container">
+        <div class="login-card">
+            <h2>Login</h2>
+            {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form method="post" action="{% url 'login1' %}">
+                {% csrf_token %}
+                <input type="text" placeholder="Username" name="username" required>
+
+                <!-- Password field with eye icon -->
+                <div class="password-field">
+                    <input type="password" placeholder="Password" name="password" id="password" required>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+                    
+
+                </div>
+                <p><a href="{% url 'forgot_password'%}">Forgot your password?</a></p>
+                <button type="submit">Log In</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+            <p>Login as<a href="{% url 'adminlogin' %}">Admin</a></p>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(fieldId, iconElement) {
+            const passwordField = document.getElementById(fieldId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                iconElement.textContent = "🙈"; // Change icon to "hide" icon
+            } else {
+                passwordField.type = "password";
+                iconElement.textContent = "👁️"; // Change icon to "show" icon
+            }
+        }
+    </script>
+</body>
+</html>

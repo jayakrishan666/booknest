@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookNest</title>
+    <link rel="stylesheet" href="{% static 'style2.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="navbar-left">
+            <h1>BookNest</h1>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'login' %}">Log In</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+        </div>
+    </header>
+
+
+
+    <!-- Categories -->
+    <!-- Categories -->
+<section class="categories">
+    <i><h2>"A good book is a friend that never lets you down"</h2></i>
+    <div class="category-list">
+        {% for category in categories %}
+        <a href="{% url 'login' %}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+</section>
+
+
+    <!-- Product List -->   
+    <section class="product-list">
+        <h2>Books Available</h2>
+        <div class="products">
+            {% for product in products %}
+            <div class="product">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                {% else %}
+                <img src="{% static 'placeholder.jpg' %}" alt="No Image Available"> <!-- Optional placeholder image -->
+                {% endif %}
+                <h2>{{ product.title }}</h2>
+                    <h3>{{ product.author }}</h3>
+                    <h4>{{ product.category }}</h4>
+                    <p>Price: {{ product.price }}₹</p>
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-button">Add to Cart</button>
+            </div>
+            <!-- Add more books as needed -->
+            {% endfor %}
+        </div>
+    </section>  x
+    <!-- Back Button -->
+<!-- <div class="back-button">
+    <a href="javascript:history.back();" class="button">Back</a>
+</div> -->
+<style>
+    .add-to-cart-button {
+        padding: 8px 16px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .add-to-cart-button:hover {
+        background-color: #218838;
+    }
+</style>
+
+<style>
+    .categories a{
+        font-size: 1.1em;
+        color: white;
+    }
+    .categories h2{
+        color: white;
+        size: 50px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-size: 50px;
+        text-shadow: black;
+        box-shadow: black;
+    }
+    .categories {
+    background-image: url("{% static 'bg.jpg' %}");
+    background-size: cover; /* Ensures the image covers the whole section */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    padding: 50px; /* Optional: Adjust padding if needed */
+}
+
+    .back-button {
+        position: fixed; /* Fix the position */
+        top: 80px; /* Distance from the top */
+        left: 10px; /* Distance from the left */
+        z-index: 1000; /* Ensure it stays above other content */
+    }
+    .back-button .button {
+        padding: 8px 12px; /* Adjust padding for a minimal look */
+        background-color: transparent; /* Transparent background */
+        color: #007BFF; /* Blue text color */
+        text-decoration: none; /* Remove underline */
+        border: 1px solid #007BFF; /* Blue border */
+        border-radius: 4px; /* Slightly rounded corners */
+        font-weight: normal; /* Normal font weight */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+    }
+    .back-button .button:hover {
+        background-color: #007BFF; /* Blue background on hover */
+        color: white; /* White text on hover */
+    }
+</style>
+
+</body>
+</html>

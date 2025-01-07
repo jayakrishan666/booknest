@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .order-details p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .order-details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .order-details li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-details li:last-child {
+            border-bottom: none;
+        }
+
+        .order-summary {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+        }
+
+        .order-summary p {
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            text-align: center;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Confirmation</h2>
+        <div class="order-details">
+            <p>Thank you for your order, <strong>{{ order.user.username }}</strong>!</p>
+            <p>Your order has been placed successfully.</p>
+            <p>Order Details:</p>
+            <ul>
+                {% for item in order.items.all %}
+                    <li>
+                        <strong>{{ item.product.title }}</strong> - 
+                        {{ item.quantity }} x ₹{{ item.product.price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="order-summary">
+            <p><strong>Total Cost: ₹{{ order.total_cost }}</strong></p>
+        </div>
+
+        <a href="{% url 'home' %}" class="btn">Continue Shopping</a>
+    </div>
+</body>
+</html>
